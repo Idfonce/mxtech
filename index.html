@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Savings Goals</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-piggy-bank"></i> Savings Tracker</h1>
+            <div class="user-profile">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Current Goal Card -->
+            <div class="goal-card">
+                <div class="goal-header">
+                    <h2><i class="fas fa-mobile-alt"></i> New Laptop</h2>
+                    <span class="goal-price">$800</span>
+                </div>
+                <div class="goal-progress">
+                    <p>Your goal will be reached in:</p>
+                    <div class="countdown">
+                        <div class="time-box">
+                            <span id="days">45</span>
+                            <p>DAYS</p>
+                        </div>
+                        <div class="time-box">
+                            <span id="hours">12</span>
+                            <p>HOURS</p>
+                        </div>
+                        <div class="time-box">
+                            <span id="minutes">30</span>
+                            <p>MINUTES</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>65% Complete</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="payment-section">
+                <h3><i class="fas fa-money-bill-wave"></i> How to save</h3>
+                <button class="pay-btn" id="add-savings">
+                    <i class="fas fa-plus"></i> Add Savings
+                </button>
+                
+                <div class="daily-amount">
+                    <p>Daily Target</p>
+                    <h4>$5.00</h4>
+                </div>
+            </div>
+
+            <!-- Savings Progress -->
+            <div class="progress-section">
+                <h3><i class="fas fa-chart-line"></i> Savings Progress</h3>
+                <div class="stats">
+                    <div class="stat-box">
+                        <p>Amount Saved</p>
+                        <h4 id="saved-amount">$520.00</h4>
+                    </div>
+                    <div class="stat-box">
+                        <p>Remaining Balance</p>
+                        <h4 id="balance-amount">$280.00</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download Agreement -->
+            <div class="download-section">
+                <button class="download-btn" id="download-plan">
+                    <i class="fas fa-download"></i> Download Savings Plan
+                </button>
+            </div>
+
+            <!-- Timeline -->
+            <div class="timeline">
+                <div class="timeline-item">
+                    <i class="fas fa-calendar-check"></i>
+                    <div>
+                        <p>Last Savings Added</p>
+                        <span>Jan 28, 2024 14:30</span>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <i class="fas fa-flag"></i>
+                    <div>
+                        <p>Goal Started</p>
+                        <span>01-01-2024</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Savings Options -->
+            <div class="savings-options">
+                <h3><i class="fas fa-calendar-alt"></i> Savings Frequency</h3>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <i class="fas fa-sun"></i>
+                        <h5>Daily</h5>
+                        <p>$5.00</p>
+                    </div>
+                    <div class="option-card">
+                        <i class="fas fa-calendar-week"></i>
+                        <h5>Weekly</h5>
+                        <p>$35.00</p>
+                    </div>
+                    <div class="option-card">
+                        <i class="fas fa-calendar"></i>
+                        <h5>Monthly</h5>
+                        <p>$150.00</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Navigation -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Transactions</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-credit-card"></i>
+                <span>Payments</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-question-circle"></i>
+                <span>Support</span>
+            </a>
+        </nav>
+
+        <!-- Modal for adding savings -->
+        <div class="modal" id="savings-modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h3><i class="fas fa-plus-circle"></i> Add Savings</h3>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="savings-amount">Amount ($)</label>
+                        <input type="number" id="savings-amount" placeholder="Enter amount" min="1" value="20">
+                    </div>
+                    <div class="input-group">
+                        <label for="savings-date">Date</label>
+                        <input type="date" id="savings-date" value="2024-02-02">
+                    </div>
+                    <button class="confirm-btn" id="confirm-savings">
+                        <i class="fas fa-check"></i> Add to Savings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
