@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savings Goals Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><i class="fas fa-piggy-bank"></i> Savings Goals Tracker</h1>
+            <nav>
+                <button class="nav-btn active" data-page="dashboard">
+                    <i class="fas fa-home"></i> Dashboard
+                </button>
+                <button class="nav-btn" data-page="create-goal">
+                    <i class="fas fa-plus-circle"></i> Create Goal
+                </button>
+                <button class="nav-btn" data-page="my-goals">
+                    <i class="fas fa-bullseye"></i> My Goals
+                </button>
+                <button class="nav-btn" data-page="transactions">
+                    <i class="fas fa-history"></i> Transactions
+                </button>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page active">
+            <div class="card">
+                <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-goals">0</div>
+                        <div class="stat-label">Total Goals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-saved">Tzs. 0</div>
+                        <div class="stat-label">Total Saved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-target">Tzs. 0</div>
+                        <div class="stat-label">Total Target</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="avg-progress">0%</div>
+                        <div class="stat-label">Average Progress</div>
+                    </div>
+                </div>
+                
+                <div class="empty-state" id="dashboard-empty">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>No savings goals yet</h3>
+                    <p>Create your first savings goal to see your dashboard statistics</p>
+                    <button class="success" style="margin-top: 20px;" data-page="create-goal">
+                        <i class="fas fa-plus-circle"></i> Create Your First Goal
+                    </button>
+                </div>
+                
+                <div id="recent-goals" style="display: none;">
+                    <h3 style="margin-top: 30px;">Recent Goals</h3>
+                    <div class="goals-list" id="dashboard-goals">
+                        <!-- Recent goals will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Create Goal Page (with yellow background) -->
+        <div id="create-goal-page" class="page">
+            <div class="card">
+                <h2><i class="fas fa-plus-circle"></i> Create a New Savings Goal</h2>
+                
+                <div class="form-group">
+                    <label for="goal-name">What are you saving for? *</label>
+                    <input type="text" id="goal-name" placeholder="e.g., New Smartphone, Vacation, Emergency Fund">
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal-description">Description</label>
+                    <textarea id="goal-description" placeholder="Describe your goal... (optional)"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal-target">Target Amount (Tzs.) *</label>
+                    <input type="number" id="goal-target" placeholder="e.g., 1500000" min="1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal-category">Category (optional)</label>
+                    <select id="goal-category">
+                        <option value="">Select a category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="travel">Travel</option>
+                        <option value="education">Education</option>
+                        <option value="home">Home</option>
+                        <option value="vehicle">Vehicle</option>
+                        <option value="emergency">Emergency Fund</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="goal-deadline">Target Date (optional)</label>
+                    <input type="date" id="goal-deadline">
+                </div>
+                
+                <div class="goal-actions">
+                    <button class="secondary" data-page="dashboard">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </button>
+                    <button id="create-goal-btn" class="success">
+                        <i class="fas fa-check"></i> Create Savings Goal
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- My Goals Page -->
+        <div id="my-goals-page" class="page">
+            <div class="card">
+                <h2><i class="fas fa-bullseye"></i> My Savings Goals</h2>
+                
+                <div id="goals-container" class="goals-list">
+                    <!-- Goals will be dynamically added here -->
+                    <div class="empty-state" id="empty-goals">
+                        <i class="fas fa-bullseye"></i>
+                        <h3>No savings goals yet</h3>
+                        <p>Create your first savings goal to get started</p>
+                        <button class="success" style="margin-top: 20px;" data-page="create-goal">
+                            <i class="fas fa-plus-circle"></i> Create a Goal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Transactions Page -->
+        <div id="transactions-page" class="page">
+            <div class="card">
+                <h2><i class="fas fa-history"></i> Recent Transactions</h2>
+                
+                <div class="form-group">
+                    <label for="filter-goal">Filter by Goal</label>
+                    <select id="filter-goal">
+                        <option value="all">All Goals</option>
+                        <!-- Goal options will be added dynamically -->
+                    </select>
+                </div>
+                
+                <div id="transactions-container">
+                    <div class="empty-state" id="empty-transactions">
+                        <i class="fas fa-exchange-alt"></i>
+                        <h3>No transactions yet</h3>
+                        <p>Add savings to your goals to see transactions here</p>
+                        <button class="success" style="margin-top: 20px;" data-page="my-goals">
+                            <i class="fas fa-bullseye"></i> View My Goals
+                        </button>
+                    </div>
+                    
+                    <div class="transaction-list" id="transactions-list" style="display: none;">
+                        <!-- Transactions will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Goal Details Modal -->
+        <div id="goal-details-modal" class="page" style="display: none;">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 id="selected-goal-title"></h2>
+                    <button class="secondary" onclick="closeGoalDetails()">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+                
+                <div id="selected-goal-content">
+                    <!-- Goal details will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Savings Goals Tracker &copy; 2023 | Track your financial goals with ease</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+                  </html>
