@@ -1,6 +1,11 @@
 // COMPLETELY EMPTY - Fresh start!
 let goals = [];
 
+// USSD Payment variables
+let currentUssdGoalId = null;
+let ussdAmount = 0;
+let selectedProvider = '';
+
 // DOM Elements
 const pages = document.querySelectorAll('.page');
 const navBtns = document.querySelectorAll('.nav-btn');
@@ -168,12 +173,12 @@ function renderGoals() {
             <div style="margin-top: 10px; font-size: 0.9rem; color: #28a745;">
                 <i class="fas fa-clock"></i> No deadline - Save at your own pace!
             </div>
-            <div class="goal-actions">
-                <button onclick="viewGoalDetails(${goal.id})" style="flex: 2; background-color: #FFA500;">
-                    <i class="fas fa-eye"></i> View Details
-                </button>
+            <div style="display: flex; gap: 5px; margin-top: 15px;">
                 <button onclick="addToGoal(${goal.id})" class="success" style="flex: 1;">
-                    <i class="fas fa-plus"></i> Add
+                    <i class="fas fa-plus"></i> Quick Add
+                </button>
+                <button onclick="openUssdPayment(${goal.id})" style="flex: 1; background-color: #28a745;">
+                    <i class="fas fa-mobile-alt"></i> USSD Pay
                 </button>
             </div>
         `;
@@ -222,7 +227,7 @@ function createNewGoal() {
     navigateToPage('my-goals');
     
     // Show success message
-    alert(`🎉 Successfully created "${newGoal.name}" goal!\n\nYou're now tracking: ${formatCurrency(newGoal.targetAmount)}\nStart adding savings whenever you're ready!`);
+    alert(`🎉 Successfully created "${newGoal.name}" goal!\n\nTarget: ${formatCurrency(newGoal.targetAmount)}\nStart adding savings via USSD or Quick Add!`);
 }
 
 // View goal details in modal
@@ -281,11 +286,11 @@ function viewGoalDetails(goalId) {
         <div class="goal-description" style="margin-bottom: 20px;">${goal.description}</div>
         
         <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 25px;">
-            <div style="border: 2px solid #FFD700; padding: 15px; border-radius: 10px; background-color: #fffef5;">
+            <div style="border: 2px solid #FFD700; padding: 15px; border-radius: 10px; background-color: #fffef5; flex: 1;">
                 <div style="font-weight: 600; color: #FF8C00;">Target Amount</div>
                 <div class="goal-amount" style="font-size: 1.3rem;">${formatCurrency(goal.targetAmount)}</div>
             </div>
-            <div style="border: 2px solid #FFD700; padding: 15px; border-radius: 10px; background-color: #fffef5;">
+            <div style="border: 2px solid #FFD700; padding: 15px; border-radius: 10px; background-color: #fffef5; flex: 1;">
                 <div style="font-weight: 600; color: #FF8C00;">Currently Saved</div>
                 <div class="goal-amount" style="font-size: 1.3rem;">${formatCurrency(goal.currentAmount)}</div>
             </div>
@@ -313,9 +318,15 @@ function viewGoalDetails(goalId) {
                 <input type="number" id="transaction-amount-${goal.id}" placeholder="Amount to add" style="flex: 1;">
                 <input type="text" id="transaction-note-${goal.id}" placeholder="Note (optional)" style="flex: 1;">
                 <button onclick="addTransaction(${goal.id})" class="success" style="background-color: #28a745;">
-                    <i class="fas fa-plus"></i> Add
+                    <i class="fas fa-plus"></i> Quick Add
                 </button>
             </div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <button onclick="openUssdPayment(${goal.id})" style="width: 100%; background-color: #28a745; padding: 15px;">
+                <i class="fas fa-mobile-alt"></i> Pay via USSD (Airtel, Vodacom, Halotel, Tigo)
+            </button>
         </div>
         
         <div style="margin-top: 40px;">
@@ -335,7 +346,8 @@ function closeGoalDetails() {
 
 // Quick add to goal from My Goals page
 function addToGoal(goalId) {
-    const amount = prompt(`How much would you like to add to "${goals.find(g => g.id === goalId)?.name}"? (Tzs.)`);
+    const goal = goals.find(g => g.id === goalId);
+    const amount = prompt(`How much would you like to add to "${goal?.name}"? (Tzs.)`);
     
     if (!amount || isNaN(amount) || amount <= 0) {
         alert('Please enter a valid amount');
@@ -475,7 +487,247 @@ function populateGoalFilter() {
     filterGoalSelect.addEventListener('change', updateTransactionsList);
 }
 
+// ====================================
+// USSD PAYMENT SIMULATION FUNCTIONS
+// ====================================
+
+function openUssdPayment(goalId) {
+    const goal = goals.find(g => g.id === goalId);
+    if (!goal) return;
+    
+    currentUssdGoalId = goalId;
+    ussdAmount = 0;
+    selectedProvider = '';
+    
+    // Show USSD modal
+    document.getElementById('ussd-modal').style.display = 'block';
+    
+    // Hide other pages
+    pages.forEach(page => {
+        if (page.id !== 'ussd-modal') {
+            page.classList.remove('active');
+        }
+    });
+    
+    showUssdStep1(goal);
+}
+
+function closeUssdModal() {
+    document.getElementById('ussd-modal').style.display = 'none';
+    navigateToPage('my-goals');
+}
+
+function showUssdStep1(goal) {
+    document.getElementById('ussd-content').innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 1.2rem; color: #FF8C00; margin-bottom: 10px;">
+                <i class="fas fa-bullseye"></i> ${goal.name}
+            </div>
+            <div style="color: #666; margin-bottom: 5px;">Enter amount to save (Tzs.)</div>
+            <div style="font-size: 0.9rem; color: #888;">Minimum: Tzs. 100</div>
+        </div>
+        
+        <div class="form-group">
+            <input type="number" id="ussd-amount" placeholder="Enter amount" min="100" style="text-align: center; font-size: 1.2rem; font-weight: bold;">
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="proceedToStep2()" style="width: 100%; background-color: #28a745; padding: 15px;">
+                <i class="fas fa-arrow-right"></i> Continue to Payment
+            </button>
+        </div>
+    `;
+}
+
+function proceedToStep2() {
+    const amountInput = document.getElementById('ussd-amount');
+    const amount = parseInt(amountInput.value);
+    
+    if (!amount || amount < 100) {
+        alert('Please enter a valid amount (minimum Tzs. 100)');
+        return;
+    }
+    
+    ussdAmount = amount;
+    
+    document.getElementById('ussd-content').innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 1.2rem; color: #FF8C00; margin-bottom: 10px;">
+                <i class="fas fa-mobile-alt"></i> Select Payment Method
+            </div>
+            <div style="font-size: 1.1rem; color: #28a745; font-weight: bold; margin-bottom: 10px;">
+                Amount: ${formatCurrency(amount)}
+            </div>
+            <div style="color: #666; font-size: 0.9rem;">Select your mobile money provider</div>
+        </div>
+        
+        <div style="display: grid; gap: 10px; margin-bottom: 20px;">
+            <button onclick="selectProvider('airtel')" style="text-align: left; background-color: #e30613; justify-content: flex-start; padding: 15px;">
+                <i class="fas fa-sim-card" style="font-size: 1.2rem;"></i> Airtel Tanzania (Dial *150*60#)
+            </button>
+            
+            <button onclick="selectProvider('vodacom')" style="text-align: left; background-color: #e60000; justify-content: flex-start; padding: 15px;">
+                <i class="fas fa-sim-card" style="font-size: 1.2rem;"></i> Vodacom Tanzania (Dial *150*00#)
+            </button>
+            
+            <button onclick="selectProvider('halotel')" style="text-align: left; background-color: #00a8e0; justify-content: flex-start; padding: 15px;">
+                <i class="fas fa-sim-card" style="font-size: 1.2rem;"></i> Halotel Tanzania (Dial *150*88#)
+            </button>
+            
+            <button onclick="selectProvider('tigo')" style="text-align: left; background-color: #ff6600; justify-content: flex-start; padding: 15px;">
+                <i class="fas fa-sim-card" style="font-size: 1.2rem;"></i> Tigo Tanzania (Dial *150*01#)
+            </button>
+        </div>
+        
+        <div style="text-align: center;">
+            <button onclick="showUssdStep1()" class="secondary" style="margin-right: 10px; padding: 10px 20px;">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
+        </div>
+    `;
+}
+
+function selectProvider(provider) {
+    selectedProvider = provider;
+    
+    const providerNames = {
+        'airtel': 'Airtel Tanzania',
+        'vodacom': 'Vodacom Tanzania', 
+        'halotel': 'Halotel Tanzania',
+        'tigo': 'Tigo Tanzania'
+    };
+    
+    const ussdCodes = {
+        'airtel': '*150*60#',
+        'vodacom': '*150*00#',
+        'halotel': '*150*88#',
+        'tigo': '*150*01#'
+    };
+    
+    document.getElementById('ussd-content').innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 1.2rem; color: #FF8C00; margin-bottom: 10px;">
+                <i class="fas fa-check-circle"></i> Confirm Payment
+            </div>
+            <div style="margin-bottom: 5px; color: #666;">Provider: <strong>${providerNames[provider]}</strong></div>
+            <div style="font-size: 1.3rem; color: #28a745; font-weight: bold; margin-bottom: 15px;">
+                ${formatCurrency(ussdAmount)}
+            </div>
+        </div>
+        
+        <div class="ussd-instruction">
+            <div style="font-weight: bold; margin-bottom: 10px; color: #FF8C00;">📱 Payment Instructions:</div>
+            <ol>
+                <li>Dial <strong>${ussdCodes[provider]}</strong> on your phone</li>
+                <li>Select "Send Money" or "Payments"</li>
+                <li>Enter recipient number (your business number)</li>
+                <li>Enter amount: <strong>${ussdAmount.toLocaleString()} Tzs.</strong></li>
+                <li>Enter your PIN to complete payment</li>
+                <li>Return here to confirm payment</li>
+            </ol>
+        </div>
+        
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="payment-confirmation">Enter Payment Reference/Code (Optional):</label>
+            <input type="text" id="payment-ref" placeholder="e.g., TX123456 or leave blank for simulation">
+            <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                Enter reference from SMS or leave blank for simulation
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button onclick="proceedToStep2()" class="secondary" style="flex: 1; padding: 12px;">
+                <i class="fas fa-arrow-left"></i> Change Provider
+            </button>
+            <button onclick="completeUssdPayment()" class="success" style="flex: 2; background-color: #28a745; padding: 12px;">
+                <i class="fas fa-check"></i> Confirm Payment Received
+            </button>
+        </div>
+    `;
+}
+
+function completeUssdPayment() {
+    const goal = goals.find(g => g.id === currentUssdGoalId);
+    if (!goal) {
+        alert('Error: Goal not found');
+        closeUssdModal();
+        return;
+    }
+    
+    const paymentRef = document.getElementById('payment-ref').value.trim();
+    const providerNames = {
+        'airtel': 'Airtel Money',
+        'vodacom': 'M-Pesa',
+        'halotel': 'Halopesa',
+        'tigo': 'Tigo Pesa'
+    };
+    
+    // Add transaction
+    const now = new Date();
+    const transactionDate = now.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    }) + ' ' + now.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    const note = `USSD Payment via ${providerNames[selectedProvider] || 'Mobile Money'}${paymentRef ? ' (Ref: ' + paymentRef + ')' : ''}`;
+    
+    const newTransaction = {
+        id: goal.transactions.length > 0 ? Math.max(...goal.transactions.map(t => t.id)) + 1 : 1,
+        date: transactionDate,
+        amount: ussdAmount,
+        note: note
+    };
+    
+    goal.transactions.unshift(newTransaction);
+    
+    // Update current amount
+    goal.currentAmount += ussdAmount;
+    
+    // Update UI
+    updateDashboard();
+    renderGoals();
+    updateTransactionsList();
+    
+    // Show success message
+    document.getElementById('ussd-content').innerHTML = `
+        <div style="text-align: center; padding: 40px 20px;">
+            <div style="font-size: 4rem; color: #28a745; margin-bottom: 20px; animation: successPulse 0.5s ease;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 style="color: #28a745; margin-bottom: 15px;">Payment Successful! 🎉</h3>
+            <div style="font-size: 1.2rem; margin-bottom: 10px; color: #FF8C00;">
+                ${formatCurrency(ussdAmount)} received
+            </div>
+            <div style="color: #666; margin-bottom: 20px; line-height: 1.5;">
+                <div>Added to: <strong>${goal.name}</strong></div>
+                <div>via ${providerNames[selectedProvider] || 'Mobile Payment'}</div>
+            </div>
+            <div style="background-color: #fffef5; padding: 15px; border-radius: 8px; border: 2px solid #28a745; margin-bottom: 25px;">
+                <div style="font-weight: bold; color: #FF8C00; margin-bottom: 5px;">New Total:</div>
+                <div style="font-size: 1.5rem; color: #28a745; font-weight: bold;">
+                    ${formatCurrency(goal.currentAmount)} / ${formatCurrency(goal.targetAmount)}
+                </div>
+                <div style="margin-top: 10px; color: #666;">
+                    Progress: ${Math.round((goal.currentAmount / goal.targetAmount) * 100)}%
+                </div>
+            </div>
+            <button onclick="closeUssdModal()" style="width: 100%; background-color: #28a745; padding: 15px; font-size: 1.1rem;">
+                <i class="fas fa-check"></i> Continue to Goals
+            </button>
+        </div>
+    `;
+    
+    // Auto-close after 8 seconds
+    setTimeout(() => {
+        closeUssdModal();
+    }, 8000);
+}
+
 // Helper functions
 function formatCurrency(amount) {
     return `Tzs. ${amount.toLocaleString('en-US')}`;
-}
+            }
