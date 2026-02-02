@@ -17,7 +17,7 @@ body {
 
 /* Header and Navigation */
 header {
-    background-color: #FFD700;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
     color: #333;
     padding: 20px;
     border-radius: 0 0 12px 12px;
@@ -64,10 +64,11 @@ nav {
 .nav-btn:hover {
     background-color: #FFD700;
     color: #333;
+    transform: translateY(-2px);
 }
 
 .nav-btn.active {
-    background-color: #FFA500;
+    background-color: #FF8C00;
     color: white;
     border-color: #FF8C00;
 }
@@ -129,7 +130,7 @@ input, select, textarea {
     border: 1px solid #FFD700;
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s;
+    transition: all 0.3s;
     background-color: #fffef5;
 }
 
@@ -142,8 +143,10 @@ input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #FFA500;
     box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
+    transform: translateY(-1px);
 }
 
+/* Button Styling */
 button {
     background-color: #FFA500;
     color: white;
@@ -153,7 +156,7 @@ button {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -162,6 +165,12 @@ button {
 
 button:hover {
     background-color: #FF8C00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 140, 0, 0.2);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 button.secondary {
@@ -181,6 +190,35 @@ button.success:hover {
     background-color: #218838;
 }
 
+/* Payment Provider Buttons */
+.payment-provider {
+    background-color: white;
+    color: #333;
+    border: 2px solid #FFD700;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    text-align: left;
+    width: 100%;
+}
+
+.payment-provider:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.payment-provider.airtel { border-color: #e30613; }
+.payment-provider.vodacom { border-color: #e60000; }
+.payment-provider.halotel { border-color: #00a8e0; }
+.payment-provider.tigo { border-color: #ff6600; }
+
 /* Goals List */
 .goals-list {
     display: grid;
@@ -192,15 +230,28 @@ button.success:hover {
 .goal-card {
     border-radius: 10px;
     padding: 20px;
-    background-color: #fffef5;
+    background: linear-gradient(145deg, #ffffff, #fff9e6);
     box-shadow: 0 3px 10px rgba(255, 215, 0, 0.15);
     border-left: 5px solid #FFA500;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
 }
 
 .goal-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(255, 215, 0, 0.25);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.25);
+}
+
+.goal-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #FFD700, transparent);
+    border-radius: 0 0 0 50px;
 }
 
 .goal-title {
@@ -234,11 +285,12 @@ button.success:hover {
     border-radius: 5px;
     overflow: hidden;
     margin-bottom: 8px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .progress-fill {
     height: 100%;
-    background-color: #FFA500;
+    background: linear-gradient(90deg, #FFA500, #FFD700);
     border-radius: 5px;
     transition: width 0.5s ease;
 }
@@ -267,6 +319,11 @@ button.success:hover {
     align-items: center;
     padding: 15px;
     border-bottom: 1px solid #ffeaa7;
+    transition: background-color 0.2s;
+}
+
+.transaction-item:hover {
+    background-color: #fff9e6;
 }
 
 .transaction-item:last-child {
@@ -281,6 +338,7 @@ button.success:hover {
 .transaction-amount {
     font-weight: 600;
     color: #28a745;
+    font-size: 1.1rem;
 }
 
 .transaction-note {
@@ -315,6 +373,7 @@ footer {
     color: #666;
     font-size: 0.9rem;
     margin-top: 20px;
+    background-color: #fffef5;
 }
 
 /* Responsive */
@@ -348,6 +407,10 @@ footer {
     .container {
         padding: 20px 15px;
     }
+    
+    .card {
+        padding: 20px;
+    }
 }
 
 /* Summary Stats */
@@ -359,13 +422,18 @@ footer {
 }
 
 .stat-card {
-    background-color: #fffef5;
+    background: linear-gradient(145deg, #ffffff, #fff9e6);
     border-radius: 10px;
     padding: 20px;
     flex: 1;
     min-width: 180px;
     box-shadow: 0 3px 8px rgba(255, 215, 0, 0.1);
     border: 2px solid #FFD700;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
 }
 
 .stat-value {
@@ -391,8 +459,53 @@ footer {
     flex: 1;
 }
 
+/* Payment Methods Grid */
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+@media (max-width: 480px) {
+    .payment-methods {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Yellow theme accents */
 .stat-card:nth-child(1) .stat-value { color: #FFA500; }
 .stat-card:nth-child(2) .stat-value { color: #28a745; }
 .stat-card:nth-child(3) .stat-value { color: #FF8C00; }
 .stat-card:nth-child(4) .stat-value { color: #FF4500; }
+
+/* Animation for success */
+@keyframes successPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.success-pulse {
+    animation: successPulse 0.5s ease;
+}
+
+/* USSD Modal Specific */
+.ussd-instruction {
+    background-color: #fffef5;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #FFD700;
+    margin: 15px 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.ussd-instruction ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.ussd-instruction li {
+    margin-bottom: 5px;
+    }
