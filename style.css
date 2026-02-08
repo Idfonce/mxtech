@@ -1,0 +1,638 @@
+/* =========================================== */
+/* BASIC STYLES - DON'T CHANGE THESE          */
+/* =========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =========================================== */
+/* MAIN PAGE BACKGROUND COLOR - CHANGE HERE!  */
+/* =========================================== */
+/* This changes the background color of the whole page */
+body {
+    background-color: #ff9d2b; /* CHANGE THIS COLOR for main background */
+    color: #333;
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================== */
+/* HEADER COLORS - CHANGE HERE!               */
+/* =========================================== */
+/* This is the top header with title and buttons */
+header {
+    background: linear-gradient(135deg, #ffdc2b, #ff5f2b); /* CHANGE THESE COLORS for header gradient */
+    color: green; /* CHANGE THIS for header text color */
+    padding: 20px;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* =========================================== */
+/* MAIN TITLE COLOR - CHANGE HERE!            */
+/* =========================================== */
+/* This is the "Savings Goals Tracker" title */
+h1 {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: green; /* CHANGE THIS for main title color */
+}
+
+nav {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+/* =========================================== */
+/* NAVIGATION BUTTON COLORS - CHANGE HERE!    */
+/* =========================================== */
+/* These are the Dashboard, Create Goal, etc. buttons */
+.nav-btn {
+    background-color: rgba(255, 255, 255, 0.2); /* CHANGE THIS for button background */
+    color: white; /* CHANGE THIS for button text color */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* CHANGE THIS for button border */
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3); /* CHANGE THIS for button hover color */
+    transform: translateY(-2px);
+}
+
+/* =========================================== */
+/* ACTIVE BUTTON COLORS - CHANGE HERE!        */
+/* =========================================== */
+/* This is the color when a button is clicked/selected */
+.nav-btn.active {
+    background-color: white; /* CHANGE THIS for active button background */
+    color: #ff6b6b; /* CHANGE THIS for active button text color */
+    border-color: orange; /* CHANGE THIS for active button border */
+}
+
+/* =========================================== */
+/* MAIN CONTENT AREA                          */
+/* =========================================== */
+.container {
+    flex: 1;
+    padding: 30px 20px;
+}
+
+.page {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================== */
+/* CARD STYLES - CHANGE HERE!                 */
+/* =========================================== */
+/* These are the white boxes that contain content */
+.card {
+    background-color: #ffffff; /* CHANGE THIS for card background */
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    border: 2px solid #ffffff; /* CHANGE THIS for card border color */
+}
+
+h2 {
+    color: #2c3e50; /* CHANGE THIS for section title color */
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* =========================================== */
+/* FORM STYLES - CHANGE HERE!                 */
+/* =========================================== */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #3498db; /* CHANGE THIS for label text color */
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dce6f0; /* CHANGE THIS for input border color */
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    background-color: #f8fbff; /* CHANGE THIS for input background */
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #3498db; /* CHANGE THIS for input focus border */
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+/* =========================================== */
+/* BUTTON COLORS - CHANGE HERE!               */
+/* =========================================== */
+/* Regular buttons (blue ones) */
+button {
+    background-color: #3498db; /* CHANGE THIS for button background */
+    color: white; /* CHANGE THIS for button text color */
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+button:hover {
+    background-color: #2980b9; /* CHANGE THIS for button hover color */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* =========================================== */
+/* SECONDARY BUTTONS (Gray buttons)           */
+/* =========================================== */
+button.secondary {
+    background-color: #00afd2; /* CHANGE THIS for gray button background */
+    color: white; /* CHANGE THIS for gray button text */
+}
+
+button.secondary:hover {
+    background-color: #00d5ff; /* CHANGE THIS for gray button hover */
+}
+
+/* =========================================== */
+/* SUCCESS BUTTONS (Green buttons)            */
+/* =========================================== */
+button.success {
+    background-color: #00828e; /* CHANGE THIS for green button background */
+}
+
+button.success:hover {
+    background-color: #58d486; /* CHANGE THIS for green button hover */
+}
+
+/* =========================================== */
+/* MOBILE MONEY PROVIDER BUTTONS - CHANGE HERE! */
+/* =========================================== */
+/* AIRTEL - RED BUTTON */
+.payment-provider.airtel { 
+    background-color: #f8ff00 !important; /* CHANGE THIS for Airtel background */
+    color: white !important; /* CHANGE THIS for Airtel text color */
+    border: 2px solid #00abff !important; /* CHANGE THIS for Airtel border */
+}
+
+/* VODACOM - WHITE BUTTON */
+.payment-provider.vodacom { 
+    background-color: #ffffff !important; /* CHANGE THIS for Vodacom background */
+    color: #e60000 !important; /* CHANGE THIS for Vodacom text color */
+    border: 2px solid #e60000 !important; /* CHANGE THIS for Vodacom border */
+}
+
+/* HALOTEL - ORANGE BUTTON */
+.payment-provider.halotel { 
+    background-color: #ff6600 !important; /* CHANGE THIS for Halotel background */
+    color: white !important; /* CHANGE THIS for Halotel text color */
+    border: 2px solid #ff6600 !important; /* CHANGE THIS for Halotel border */
+}
+
+/* TIGO - BLUE BUTTON */
+.payment-provider.tigo { 
+    background-color: #0066cc !important; /* CHANGE THIS for Tigo background */
+    color: white !important; /* CHANGE THIS for Tigo text color */
+    border: 2px solid #0066cc !important; /* CHANGE THIS for Tigo border */
+}
+
+/* =========================================== */
+/* GOAL CARD STYLES - CHANGE HERE!            */
+/* =========================================== */
+.goals-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.goal-card {
+    border-radius: 10px;
+    padding: 20px;
+    background: linear-gradient(145deg, #ffffff, #f8fbff); /* CHANGE THIS for goal card gradient */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    border-left: 5px solid #00b520; /* CHANGE THIS for goal card left border */
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.goal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.goal-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(45deg, #ff95d2, #ffa840, transparent); /* CHANGE THIS for goal card corner */
+    border-radius: 0 0 0 50px;
+}
+
+.goal-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0090d7; /* CHANGE THIS for goal title color */
+    margin-bottom: 8px;
+}
+
+.goal-description {
+    color: #666; /* CHANGE THIS for goal description color */
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.goal-amount {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #007af1; /* CHANGE THIS for saved amount color (green) */
+    margin-bottom: 15px;
+}
+
+/* =========================================== */
+/* PROGRESS BAR COLORS - CHANGE HERE!         */
+/* =========================================== */
+.progress-container {
+    margin-top: 15px;
+}
+
+.progress-bar {
+    height: 10px;
+    background-color: #ffffff; /* CHANGE THIS for progress bar background */
+        border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #009934, #68d09d); /* CHANGE THIS for progress fill gradient */
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #666; /* CHANGE THIS for progress text color */
+}
+
+/* =========================================== */
+/* TRANSACTION STYLES - CHANGE HERE!          */
+/* =========================================== */
+.transaction-list {
+    margin-top: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ffffff; /* CHANGE THIS for transaction list border */
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #008ebd; /* CHANGE THIS for transaction list background */
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 3px solid #ffffff; /* CHANGE THIS for transaction separator */
+    transition: background-color 0.2s;
+}
+
+.transaction-item:hover {
+    background-color: #ffb22b; /* CHANGE THIS for transaction hover color */
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-date {
+    color: #fff; /* CHANGE THIS for date color */
+    font-size: 0.85rem;
+}
+
+.transaction-amount {
+    font-weight: 600;
+    color: #4f4f4f; /* CHANGE THIS for transaction amount color (green) */
+    font-size: 1.1rem;
+}
+
+.transaction-note {
+    font-size: 0.9rem;
+    color: #fff; /* CHANGE THIS for transaction note color */
+    margin-top: 10px;
+}
+
+/* =========================================== */
+/* EMPTY STATE COLORS - CHANGE HERE!          */
+/* =========================================== */
+/* This shows when there are no goals/transactions */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666; /* CHANGE THIS for empty state text color */
+}
+
+.empty-state i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    color: #3498db; /* CHANGE THIS for empty state icon color */
+    opacity: 0.8;
+}
+
+.empty-state h3 {
+    margin-bottom: 10px;
+    color: #2c3e50; /* CHANGE THIS for empty state title color */
+}
+
+/* =========================================== */
+/* MODAL (POPUP) COLORS - CHANGE HERE!        */
+/* =========================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* CHANGE THIS for modal overlay (semi-transparent) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #55ffff; /* CHANGE THIS for modal background */
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease;
+}
+
+/* =========================================== */
+/* SUCCESS MODAL COLORS - CHANGE HERE!        */
+/* =========================================== */
+/* This is the green popup when goal is created */
+.success-modal {
+    border: 3px solid #00ae11; /* CHANGE THIS for success modal border (green) */
+    background-color: #ffffff; /* CHANGE THIS for success modal background (light green) */
+}
+
+/* =========================================== */
+/* FOOTER COLORS - CHANGE HERE!               */
+/* =========================================== */
+/* This is the bottom section with copyright */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #fff; /* CHANGE THIS for footer text color */
+    font-size: 0.9rem;
+    margin-top: 20px;
+    background-color: #f5ab00; /* CHANGE THIS for footer background */
+    border-top: 2px solid #ffdc55; /* CHANGE THIS for footer top border */
+}
+
+/* =========================================== */
+/* RESPONSIVE STYLES (For mobile phones)      */
+/* =========================================== */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    nav {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+    
+    .nav-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 5px;
+        font-size: 0.85rem;
+    }
+    
+    .goals-list {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .container {
+        padding: 20px 15px;
+    }
+    
+    .card {
+        padding: 20px;
+    }
+}
+
+/* =========================================== */
+/* STATS CARD COLORS - CHANGE HERE!           */
+/* =========================================== */
+/* These are the 4 boxes on Dashboard (Total Goals, Total Saved, etc.) */
+.stats-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: linear-gradient(145deg, #ffffff, #f0f8ff); /* CHANGE THIS for stats card gradient */
+    border-radius: 10px;
+    padding: 20px;
+    flex: 1;
+    min-width: 180px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    border: 2px solid #aaf4ff; /* CHANGE THIS for stats card border */
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #3498db; /* CHANGE THIS for stats numbers color */
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #666; /* CHANGE THIS for stats labels color */
+    margin-top: 5px;
+}
+
+/* =========================================== */
+/* GOAL ACTIONS (Button groups)               */
+/* =========================================== */
+.goal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.goal-actions button {
+    flex: 1;
+}
+
+/* =========================================== */
+/* PAYMENT METHODS GRID                       */
+/* =========================================== */
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+@media (max-width: 480px) {
+    .payment-methods {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================== */
+/* STATS CARD NUMBER COLORS - CHANGE HERE!    */
+/* =========================================== */
+/* Different colors for each of the 4 stats boxes */
+.stat-card:nth-child(1) .stat-value { color: #3498db; } /* First box - Total Goals */
+.stat-card:nth-child(2) .stat-value { color: #3498db; } /* Second box - Total Saved */
+.stat-card:nth-child(3) .stat-value { color: #3498db; } /* Third box - Total Target */
+.stat-card:nth-child(4) .stat-value { color: #3498db; } /* Fourth box - Average Progress */
+
+/* =========================================== */
+/* SUCCESS ANIMATION                          */
+/* =========================================== */
+@keyframes successPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.success-pulse {
+    animation: successPulse 0.5s ease;
+}
+
+/* =========================================== */
+/* USSD INSTRUCTION BOX COLORS - CHANGE HERE! */
+/* =========================================== */
+.ussd-instruction {
+    background-color: #f8fbff; /* CHANGE THIS for instruction box background */
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #3498db; /* CHANGE THIS for instruction box border */
+    margin: 15px 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.ussd-instruction ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.ussd-instruction li {
+    margin-bottom: 5px;
+}
+
+/* =========================================== */
+/* SUCCESS STATE COLORS - CHANGE HERE!        */
+/* =========================================== */
+/* Green success messages */
+.success-state {
+    background-color: #d4edda; /* CHANGE THIS for success message background (light green) */
+    border: 2px solid #c3e6cb; /* CHANGE THIS for success message border (green) */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    color: #155724; /* CHANGE THIS for success message text (dark green) */
+}
+
+.success-message {
+    background-color: #28a745; /* CHANGE THIS for big success message background (green) */
+    color: white; /* CHANGE THIS for big success message text */
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    margin: 20px 0;
+  }
